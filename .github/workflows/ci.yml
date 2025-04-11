@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   scan_ruby:
@@ -29,11 +29,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+      - name: Cache gems
+  uses: actions/cache@v3
+  with:
+    path: vendor/bundle
+    key: setup-ruby-bundler-cache-${{ runner.os }}-ruby-${{ matrix.ruby }}-${{ hashFiles('**/Gemfile.lock') }}-${{ github.job }}
+    restore-keys: |
+      setup-ruby-bundler-cache-${{ runner.os }}-ruby-${{ matrix.ruby }}-
+
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
