@@ -25,11 +25,18 @@
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-            <%= link_to "About", about_path, class: "rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white", "aria-current": "page" %>
-            <%= link_to "Projects", "/projects", class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" %>
-            <%= link_to "Team", "/team", class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" %>
-            <%= link_to "Calendar", "/calendar", class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" %>
-          </div>
+  <%= link_to "Home", root_path,
+      class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(root_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
+      "aria-current": (current_page?(root_path) ? "page" : nil) %>
+
+  <%= link_to "About", about_path,
+      class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(about_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
+      "aria-current": (current_page?(about_path) ? "page" : nil) %>
+
+  <%#= link_to "Team", "/team", class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" %>
+  <%#= link_to "Calendar", "/calendar", class: "rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" %>
+</div>
+
         </div>
       </div>
 

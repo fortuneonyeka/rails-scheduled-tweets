@@ -25,8 +25,11 @@
 
   <body>
     <%= render partial: "shared/navbar" %>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <div class="container mx-auto mt-28 px-5">
+      
+      <%= render partial: "shared/flash"%>
+
       <%= yield %>
-    </main>
+    </div>
   </body>
 </html>
