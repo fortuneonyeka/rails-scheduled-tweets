@@ -14,5 +14,5 @@ Rails.application.routes.draw do
 
   # About route
   get "about", to: "about#index"
-  get "sign_up", to: "registration#new"
+  get "sign_up", to: "registrations#new"
 end
