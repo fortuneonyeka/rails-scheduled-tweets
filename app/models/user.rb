@@ -1,13 +1,70 @@
-# email:string
-# password_digest:string
 class User < ApplicationRecord
   has_secure_password
 
-validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
-validates :password, presence: true,
-  length: { minimum: 6 },
-format: {
-  with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+\z/,
-  message: "must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
-                  }
+  # Email validations
+  validates :email, 
+    presence: { message: "can't be blank" },
+    uniqueness: { case_sensitive: false, message: "is already taken" },
+    format: { 
+      with: URI::MailTo::EMAIL_REGEXP, 
+      message: "must be a valid email address" 
+    },
+    length: { 
+      maximum: 255, 
+      message: "is too long (maximum is 255 characters)" 
+    }
+
+  # Name validations
+  validates :first_name, 
+    presence: { message: "can't be blank" },
+    length: { 
+      maximum: 50, 
+      message: "is too long (maximum is 50 characters)" 
+    },
+    format: {
+      with: /\A[a-zA-Z\s'-]+\z/,
+      message: "can only contain letters, spaces, hyphens, and apostrophes"
+    }
+
+  validates :last_name, 
+    presence: { message: "can't be blank" },
+    length: { 
+      maximum: 50, 
+      message: "is too long (maximum is 50 characters)" 
+    },
+    format: {
+      with: /\A[a-zA-Z\s'-]+\z/,
+      message: "can only contain letters, spaces, hyphens, and apostrophes"
+    }
+
+  # Password validations
+  validates :password,
+    presence: { message: "can't be blank" },
+    length: { 
+      minimum: 8, 
+      maximum: 128,
+      too_short: "is too short (minimum is 8 characters)",
+      too_long: "is too long (maximum is 128 characters)"
+    },
+    format: {
+      with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+\z/,
+      message: "must include at least: 1 uppercase, 1 lowercase, 1 digit, and 1 special character (@$!%*?&)"
+    },
+    allow_nil: true # Allows blank passwords when updating other attributes
+
+  # Password confirmation validation
+  validates :password_confirmation, 
+    presence: { message: "can't be blank" },
+    if: -> { password.present? }
+
+  # Custom validation for password confirmation match
+  validate :password_match, if: -> { password.present? && password_confirmation.present? }
+
+  private
+
+  def password_match
+    unless password == password_confirmation
+      errors.add(:password_confirmation, "doesn't match Password")
+    end
+  end
 end
