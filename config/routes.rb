@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "welcome/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -11,8 +12,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+  get "welcome", to: "welcome#index"
 
   # About route
   get "about", to: "about#index"
-  get "sign_up", to: "registrations#new"
+
+  scope path: "sign_up" do
+    get "/", to: "registrations#new", as: :sign_up
+    post "/", to: "registrations#create"
+  end
 end
