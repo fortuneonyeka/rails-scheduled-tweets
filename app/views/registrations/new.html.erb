@@ -25,17 +25,40 @@
   <%= form.text_field :last_name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "Last Name" %>
 </div>
 
-<div class="mb-4">
+<div class="mb-4 relative">
   <%= form.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
-  <%= form.password_field :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "Password" %>
+  <div class="relative">
+    <%= form.password_field :password, 
+          id: "password",
+          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10", 
+          placeholder: "Password" %>
+    <button type="button" onclick="togglePassword('password')" class="absolute right-0 top-1/2 -translate-y-1/2 h-full flex items-center justify-center px-3 text-gray-600 hover:text-gray-800">
+      👁️
+    </button>
+  </div>
 </div>
 
-<div class="mb-6">
+<div class="mb-4 relative">
   <%= form.label :password_confirmation, class: "block text-gray-700 text-sm font-bold mb-2" %>
-  <%= form.password_field :password_confirmation, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "Confirm Password" %>
+  <div class="relative">
+    <%= form.password_field :password_confirmation, 
+          id: "password_confirmation",
+          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10", 
+          placeholder: "Password Confirmation" %>
+    <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-0 top-1/2 -translate-y-1/2 h-full flex items-center justify-center px-3 text-gray-600 hover:text-gray-800">
+      👁️
+    </button>
+  </div>
 </div>
 
 <div class="flex items-center justify-between">
   <%= form.submit "Sign Up", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer w-full" %>
 </div>
 <% end %>
+
+<script>
+  function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    field.type = field.type === 'password' ? 'text' : 'password';
+  }
+</script>
