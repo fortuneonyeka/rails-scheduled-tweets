@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "password_resets/new"
+  get "password_resets/create"
+  get "password_resets/edit"
+  get "password_resets/update"
   get "welcome/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -29,4 +33,9 @@ Rails.application.routes.draw do
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
+
+  get 'password_reset', to: 'password_resets#new', as: :new_password_reset
+  post 'password_reset', to: 'password_resets#create'
+  get 'password_reset/edit', to: 'password_resets#edit', as: :edit_password_reset
+  patch 'password_reset', to: 'password_resets#update'
 end

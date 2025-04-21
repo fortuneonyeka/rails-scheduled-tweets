@@ -3,10 +3,17 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   before_action :current_user
 
+  def authenticate_user!
+    unless current_user
+      reset_session
+      redirect_to login_path, alert: "Please log in"
+    end
+  end
+
   private
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+    @current_user ||= User.find_by(id: session[:user_id]) # Using find_by instead of find
   end
   helper_method :current_user
 

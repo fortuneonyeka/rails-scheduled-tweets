@@ -1,5 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
+  before_destroy :clear_sessions
+
+
 
   # Email validations
   validates :email, 
@@ -57,14 +60,28 @@ class User < ApplicationRecord
     presence: { message: "can't be blank" },
     if: -> { password.present? }
 
-  # Custom validation for password confirmation match
-  validate :password_match, if: -> { password.present? && password_confirmation.present? }
+
+
+  # def send_password_reset
+  #   generate_token(:password_reset_token)
+  #   self.password_reset_sent_at = Time.zone.now
+  #   save!
+  #   UserMailer.password_reset(self).deliver_now
+  # end
+  
+  # def generate_token(column)
+  #   begin
+  #     self[column] = SecureRandom.urlsafe_base64
+  #   end while User.exists?(column => self[column])
+ 
 
   private
 
-  def password_match
-    unless password == password_confirmation
-      errors.add(:password_confirmation, "doesn't match Password")
-    end
+  
+  def clear_sessions
+    # Clear any active sessions for this user
+    Session.where(user_id: id).delete_all if defined?(Session)
   end
+  
 end
+
