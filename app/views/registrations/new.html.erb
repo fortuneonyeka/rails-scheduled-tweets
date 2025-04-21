@@ -1,7 +1,7 @@
 <%= form_with(model: @user, url: sign_up_path, html: {class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md mx-auto mt-10"}) do |form| %>
 <% if @user.errors.any? %>
 <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mb-4">
-  <h2 class="font-bold"><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+  <h2 class="font-bold"><%= pluralize(@user.errors.count, "error")%> prohibited this user from being saved:</h2>
   <ul class="list-disc pl-5">
     <% @user.errors.each do |error| %>
     <li><%= error.full_message %></li>
