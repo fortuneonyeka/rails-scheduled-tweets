@@ -30,6 +30,10 @@
             <%= tweet.scheduled_at ? l(tweet.scheduled_at, format: :long) : 'Not scheduled' %>
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+
+            <%= link_to "Show", tweet_path(tweet), class: "text-blue-600 hover:text-blue-900 mr-4" %>
+
+
             <%= link_to 'Edit', edit_tweet_path(tweet), class: "text-blue-600 hover:text-blue-900 mr-4" %>
             <%= link_to 'Delete', tweet, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-red-600 hover:text-red-900" %>
           </td>
