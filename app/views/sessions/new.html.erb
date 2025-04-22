@@ -55,3 +55,10 @@
     <%= link_to "Sign up", sign_up_path, class: "font-medium text-blue-600 hover:text-blue-500" %>
   </div>
 </div>
+
+<script>
+  function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    field.type = field.type === 'password' ? 'text' : 'password';
+  }
+</script>

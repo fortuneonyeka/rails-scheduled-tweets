@@ -1,15 +1,25 @@
 <% if flash[:notice] %>
-<div class="flash-notice relative text-white m-4 fixed top-4 right-4 bg-green-600 border border-green-400 rounded-md px-4 py-3 pr-10 transition-opacity duration-300" data-controller="flash" data-flash-delay-value="6000">
+<div class="flash-notice relative text-white m-4 fixed top-4 right-4 bg-green-600 border border-green-400 rounded-md px-4 py-3 pr-10 transition-opacity duration-300" data-dismissable>
   <%= flash[:notice] %>
-  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-300 hover:text-red-400 focus:outline-none text-xl px-1" data-action="flash#dismiss">
+  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-300 hover:text-red-400 focus:outline-none text-xl px-1" onclick="this.parentElement.remove()">
     &times;
   </button>
 </div>
 <% elsif flash[:alert] %>
-<div class="flash-alert relative bg-red-600 p-4 text-white m-4 fixed top-4 right-4 border border-red-400 rounded-md px-4 py-3 pr-10 transition-opacity duration-300" data-controller="flash" data-flash-delay-value="6000">
+<div class="flash-alert relative bg-red-600 p-4 text-white m-4 fixed top-4 right-4 border border-red-400 rounded-md px-4 py-3 pr-10 transition-opacity duration-300" data-dismissable>
   <%= flash[:alert] %>
-  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-300 hover:text-red-100 focus:outline-none text-xl px-1" data-action="flash#dismiss">
+  <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-300 hover:text-red-100 focus:outline-none text-xl px-1" onclick="this.parentElement.remove()">
     &times;
   </button>
 </div>
 <% end %>
+
+<script>
+  // Auto-dismiss after delay
+  document.querySelectorAll('[data-dismissable]').forEach(flash => {
+    setTimeout(() => {
+      flash.style.opacity = '0';
+      setTimeout(() => flash.remove(), 300); // matches transition duration
+    }, 6000);
+  });
+</script>

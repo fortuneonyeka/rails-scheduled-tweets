@@ -1,0 +1,273 @@
+<!-- app/views/home/dashboard.html.erb -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Flash Messages with Auto-Dismiss -->
+  <% if flash[:notice] %>
+  <div class="flash-message bg-green-50 border-l-4 border-green-400 p-4 mb-4 relative transition-opacity duration-500" data-controller="flash" data-flash-delay-value="6000">
+    <button class="flash-close absolute top-2 right-2 text-green-500 hover:text-green-700" data-action="click->flash#dismiss">
+      &times;
+    </button>
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-green-700"><%= flash[:notice] %></p>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <% if flash[:alert] %>
+  <div class="flash-message bg-red-50 border-l-4 border-red-400 p-4 mb-4 relative transition-opacity duration-500" data-controller="flash" data-flash-delay-value="6000">
+    <button class="flash-close absolute top-2 right-2 text-red-500 hover:text-red-700" data-action="click->flash#dismiss">
+      &times;
+    </button>
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-red-700"><%= flash[:alert] %></p>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <h1 class="text-xl font-bold text-green-600">Evergreen Tweets</h1>
+          </div>
+        </div>
+        <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+          <%= link_to "Dashboard", "#", class: "border-green-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
+          <%= link_to "Schedule Tweet", "#", class: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
+          <%= link_to "Analytics", "#", class: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
+          <div class="ml-3 relative">
+            <div class="relative">
+              <button class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" id="user-menu">
+                <span class="sr-only">Open user menu</span>
+                <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">
+                  <%= current_user.first_name[0].upcase %><%= current_user.last_name[0].upcase %>
+                </div>
+              </button>
+            </div>
+            <!-- Dropdown menu -->
+            <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden" role="menu" id="user-dropdown">
+              <%= link_to "Your Profile", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <%= link_to "Settings", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <%= button_to "Sign out", logout_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Welcome Header -->
+    <div class="px-4 py-6 sm:px-0">
+      <div class="rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-900">Welcome back, <%= current_user.first_name %>!</h1>
+        <p class="mt-2 text-sm text-gray-600">Here's what's happening with your scheduled tweets today.</p>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 px-4 sm:px-0">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dt class="text-sm font-medium text-gray-500 truncate">Scheduled Tweets</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= @scheduled_tweets_count %></div>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dt class="text-sm font-medium text-gray-500 truncate">Engagement Rate</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%#= number_to_percentage(@engagement_rate, precision: 1) %></div>
+                <%# if @engagement_trend> 0 %>
+                <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                  <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <span class="sr-only">Increased by</span>
+                  <%#= number_to_percentage(@engagement_trend, precision: 1) %>
+                </div>
+                <%# end %>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dt class="text-sm font-medium text-gray-500 truncate">Impressions</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= number_with_delimiter(@impressions) %></div>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dt class="text-sm font-medium text-gray-500 truncate">Likes</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= number_with_delimiter(@likes) %></div>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Tweets -->
+    <div class="mt-8 px-4 sm:px-0">
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h2 class="text-xl font-semibold text-gray-900">Upcoming Tweets</h2>
+          <p class="mt-2 text-sm text-gray-700">Tweets scheduled to be posted in the next 7 days.</p>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+          <%= link_to "Schedule New", "#", class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+        </div>
+      </div>
+      <div class="mt-8 flex flex-col">
+        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Content</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scheduled For</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                      <span class="sr-only">Edit</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  <%# @upcoming_tweets.each do |tweet| %>
+                  <%
+=begin%>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                      <div class="line-clamp-2"><%= tweet.content %></div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= tweet.scheduled_at.strftime("%b %d, %Y at %I:%M %p") %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Scheduled</span>
+                    </td>
+                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <%= link_to "Edit", "#", class: "text-green-600 hover:text-green-900" %>
+                    </td>
+                  </tr>
+                  <%# end %>
+                  <%
+=end%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Flash Controller -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const flashMessages = document.querySelectorAll('[data-controller="flash"]');
+
+    flashMessages.forEach(flash => {
+      const delay = parseInt(flash.dataset.flashDelayValue) || 6000;
+
+      // Auto-dismiss after delay
+      const timeoutId = setTimeout(() => {
+        dismissFlash(flash);
+      }, delay);
+
+      // Store timeout ID to cancel if manually dismissed
+      flash.dataset.timeoutId = timeoutId;
+
+      // Add click handler to dismiss buttons
+      const dismissButtons = flash.querySelectorAll('[data-action="click->flash#dismiss"]');
+      dismissButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          clearTimeout(timeoutId);
+          dismissFlash(flash);
+        });
+      });
+    });
+
+    function dismissFlash(flashElement) {
+      flashElement.style.opacity = '0';
+      setTimeout(() => {
+        flashElement.remove();
+      }, 500); // Match the transition duration
+    }
+  });
+
+  // User dropdown functionality
+  document.getElementById('user-menu')?.addEventListener('click', function() {
+    document.getElementById('user-dropdown').classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('user-dropdown');
+    const button = document.getElementById('user-menu');
+
+    if (!button?.contains(event.target) && !dropdown?.contains(event.target)) {
+      dropdown?.classList.add('hidden');
+    }
+  });
+</script>

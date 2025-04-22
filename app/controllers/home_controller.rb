@@ -1,13 +1,25 @@
-# app/controllers/home_controller.rb
 class HomeController < ApplicationController
-  before_action :authenticate_user!
+  # Remove the Devise-specific line
+  # skip_before_action :authenticate_user!, only: [:index]
 
   def index
-    if current_user.nil?
-      reset_session
-      redirect_to login_path, alert: "Session expired. Please log in again."
+    if logged_in? # Replace with your authentication method
+      @user = current_user
+      render :dashboard
     else
-      # Your normal index action
+      render :landing
     end
+  end
+
+  private
+
+  def logged_in?
+    # Implement your own authentication check
+    session[:user_id].present?
+  end
+
+  def current_user
+    # Implement your own current user method
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
 end

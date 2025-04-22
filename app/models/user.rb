@@ -1,9 +1,15 @@
 class User < ApplicationRecord
   has_secure_password
   before_destroy :clear_sessions
+  has_one_attached :avatar
 
+  def avatar_url
+    return default_avatar_url unless ActiveRecord::Base.connection.table_exists?('active_storage_attachments')
 
-
+    avatar.attached? ? avatar : default_avatar_url
+  rescue ActiveRecord::StatementInvalid
+    default_avatar_url
+  end
   # Email validations
   validates :email, 
     presence: { message: "can't be blank" },
@@ -77,7 +83,11 @@ class User < ApplicationRecord
 
   private
 
-  
+  def default_avatar_url
+    identifier = email.present? ? email.downcase : id
+    hash = Digest::MD5.hexdigest(identifier.to_s)
+    "https://i.pravatar.cc/300?u=#{hash}"
+  end
   def clear_sessions
     # Clear any active sessions for this user
     Session.where(user_id: id).delete_all if defined?(Session)
