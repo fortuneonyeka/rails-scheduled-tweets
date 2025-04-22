@@ -21,22 +21,28 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   get "welcome", to: "welcome#index"
-  get "dashboard", to: "dashboard#index"
-
-  # About route
   get "about", to: "about#index"
 
-  scope path: "sign_up" do
-    get "/", to: "registrations#new", as: :sign_up
-    post "/", to: "registrations#create"
-  end
-
+  # Authentication
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
+  get "sign_up", to: "registrations#new", as: :sign_up
+post "sign_up", to: "registrations#create"
+  
+  # Dashboard
+  get "dashboard", to: "home#dashboard"
+  
+  # Tweet management
+  resources :tweets, except: [ :index ] do
+    collection do
+      get "scheduled", to: "tweets#scheduled"  # /tweets/scheduled
+    end
+  end
+  
 
-  get 'password_reset', to: 'password_resets#new', as: :new_password_reset
-  post 'password_reset', to: 'password_resets#create'
-  get 'password_reset/edit', to: 'password_resets#edit', as: :edit_password_reset
-  patch 'password_reset', to: 'password_resets#update'
+  get "password_reset", to: "password_resets#new", as: :new_password_reset
+  post "password_reset", to: "password_resets#create"
+  get "password_reset/edit", to: "password_resets#edit", as: :edit_password_reset
+  patch "password_reset", to: "password_resets#update"
 end

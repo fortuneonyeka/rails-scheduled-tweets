@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   before_destroy :clear_sessions
   has_one_attached :avatar
+  has_many :tweets, dependent: :destroy
 
   def avatar_url
     return default_avatar_url unless ActiveRecord::Base.connection.table_exists?('active_storage_attachments')

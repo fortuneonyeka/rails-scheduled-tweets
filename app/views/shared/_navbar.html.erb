@@ -25,6 +25,15 @@
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
+
+
+
+
+            <% if logged_in? %>
+            <%= link_to "Dashboard", root_path,
+                class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(root_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
+                "aria-current": (current_page?(root_path) ? "page" : nil) %>
+            <%else%>
             <%= link_to "Home", root_path,
               class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(root_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
               "aria-current": (current_page?(root_path) ? "page" : nil) %>
@@ -32,11 +41,6 @@
             <%= link_to "About", about_path,
               class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(about_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
               "aria-current": (current_page?(about_path) ? "page" : nil) %>
-
-            <% if logged_in? %>
-            <%= link_to "Dashboard", dashboard_path,
-                class: "rounded-md px-3 py-2 text-sm font-medium #{current_page?(dashboard_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}",
-                "aria-current": (current_page?(dashboard_path) ? "page" : nil) %>
             <% end %>
           </div>
         </div>
@@ -93,8 +97,8 @@
             class: "block rounded-md px-3 py-2 text-base font-medium #{current_page?(about_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" %>
 
       <% if logged_in? %>
-      <%= link_to "Dashboard", dashboard_path, 
-              class: "block rounded-md px-3 py-2 text-base font-medium #{current_page?(dashboard_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" %>
+      <%= link_to "Dashboard", root_path, 
+              class: "block rounded-md px-3 py-2 text-base font-medium #{current_page?(root_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" %>
 
       <div class="border-t border-gray-700 pt-4 pb-3">
         <div class="flex items-center px-5">

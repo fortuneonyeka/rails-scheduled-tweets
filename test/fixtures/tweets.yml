@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  status: 1
+  scheduled_at: 2025-04-22 16:53:12
+  user: one
+
+two:
+  content: MyText
+  status: 1
+  scheduled_at: 2025-04-22 16:53:12
+  user: two
